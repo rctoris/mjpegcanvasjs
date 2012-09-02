@@ -12,7 +12,7 @@
 		// initialize the stream on the canvas 
 		var mjpeg = new MjpegCanvas({
 			host : 'localhost',
-			topic : '/overhead_north/image_raw',
+			topic : '/overhead_south/image_raw',
 			canvasID : 'my-mjpeg',
 			width : 800,
 			height : 600
@@ -23,6 +23,6 @@
 
 </head>
 <body onload="start()">
-	<canvas id="my-mjpeg" width="800px" height="600px"></canvas>
+	<canvas id="my-mjpeg" width="800" height="600"></canvas>
 </body>
 </html>
