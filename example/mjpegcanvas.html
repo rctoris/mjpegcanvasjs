@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <title>MJPEG Canvas Example</title>
 
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="../mjpegcanvas.js"></script>
+
 <script type="text/javascript">
 	function start() {
 		// initialize the stream on the canvas 
 		var mjpeg = new MjpegCanvas({
-			host : 'localhost',
-			topic : '/overhead_south/image_raw',
+			host : 'rail-sim2.cs.wpi.edu',
+			topic : '/l_forearm_cam/image_color',
 			canvasID : 'my-mjpeg',
-			width : 800,
-			height : 600
+			width : 640,
+			height : 480
 		});
-
 	}
 </script>
-
 </head>
+
 <body onload="start()">
-	<canvas id="my-mjpeg" width="800" height="600"></canvas>
+	<canvas id="my-mjpeg" width="640" height="480"></canvas>
 </body>
+
 </html>
