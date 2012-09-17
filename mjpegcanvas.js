@@ -34,7 +34,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *
  *   Author: Russell Toris
- *  Version: September 2, 2012
+ *  Version: September 17, 2012
  *
  *********************************************************************/
 
@@ -50,12 +50,12 @@ var MjpegCanvas = function(options) {
 	mjpegCanvas.height = options.height;
 
 	// grab the canvas
-	mjpegCanvas.canvas = $('#' + mjpegCanvas.canvasID);
+	var _canvas = document.getElementById(mjpegCanvas.canvasID);
 
 	// create the image to hold the stream
 	var _img = new Image();
-	var _src = 'http://' + mjpegCanvas.host + ':' + mjpegCanvas.port + '/stream?topic='
-			+ mjpegCanvas.topic;
+	var _src = 'http://' + mjpegCanvas.host + ':' + mjpegCanvas.port
+			+ '/stream?topic=' + mjpegCanvas.topic;
 	// check for various options
 	if (mjpegCanvas.width > 0) {
 		_src += '?width=' + mjpegCanvas.width;
@@ -64,18 +64,18 @@ var MjpegCanvas = function(options) {
 		_src += '?height=' + mjpegCanvas.height;
 	}
 	if (mjpegCanvas.quality > 0) {
-		_src += '?height=' + mjpegCanvas.quality;
+		_src += '?quality=' + mjpegCanvas.quality;
 	}
 	_img.src = _src;
 
 	// a function to draw the image onto the canvas
 	function draw(_img) {
 		// grab the current sizes of the canvas
-		var width = mjpegCanvas.canvas.attr('width');
-		var height = mjpegCanvas.canvas.attr('height');
+		var width = _canvas.getAttribute('width');
+		var height = _canvas.getAttribute('height');
 
 		// grab the drawing context and draw the image
-		var context = mjpegCanvas.canvas[0].getContext('2d');
+		var context = _canvas.getContext('2d');
 		context.drawImage(_img, 0, 0, width, height);
 	}
 
