@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MJPEG Canvas Example</title>
+
+<script type="text/javascript" src="../mjpegcanvas.js"></script>
+
+<script type="text/javascript">
+	function start() {
+		// initialize the stream on the canvas 
+		var mjpeg = new MjpegCanvas({
+			host : 'rail-garage.cs.wpi.edu',
+			topic : ['/r_forearm_cam/image_color', '/l_forearm_cam/image_color', '/wide_stereo/right/image_rect_color'],
+			label : ['Right Arm', 'Left Arm', 'Robot View'],
+			canvasID : 'my-mjpeg',
+			width : 640,
+			height : 480
+		});
+	}
+</script>
+</head>
+
+<body onload="start()">
+	<canvas id="my-mjpeg" width="640" height="480"></canvas>
+</body>
+
+</html>
