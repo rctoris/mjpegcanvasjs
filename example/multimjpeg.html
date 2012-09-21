@@ -10,7 +10,7 @@
 	function start() {
 		// initialize the stream on the canvas 
 		var mjpeg = new MjpegCanvas({
-			host : 'rail-garage.cs.wpi.edu',
+			host : 'localhost',
 			topic : ['/r_forearm_cam/image_color', '/l_forearm_cam/image_color', '/wide_stereo/right/image_rect_color'],
 			label : ['Right Arm', 'Left Arm', 'Robot View'],
 			canvasID : 'my-mjpeg',

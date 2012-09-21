@@ -221,6 +221,7 @@ var MjpegCanvas = function(options) {
 
 		if (_mouseEnter && !_menuOpen) {
 			// create the "swap" button
+			_context.globalAlpha = 0.66;
 			_context.beginPath();
 			_context.rect(_buttonMargin, height
 					- (_buttonHeight + _buttonMargin), _buttonWidth,
@@ -232,21 +233,21 @@ var MjpegCanvas = function(options) {
 			_context.stroke();
 
 			// draw the text on the button
-			_context.globalAlpha = 1;
 			_context.font = _editFont;
 			_context.fillStyle = _editColor;
 			_context.fillText('Edit', _buttonMargin + _buttonPadding, height
 					- (_buttonMargin + _buttonPadding));
-			_context.globalAlpha = 0.66;
 		}
 
 		if (_menuOpen) {
-			// create the "swap" button
+			// create the white box
+			_context.globalAlpha = 0.66;
 			_context.beginPath();
 			_context.rect(0, 0, width, height);
 			_context.fillStyle = 'white';
 			_context.fill();
 		}
+		_context.globalAlpha = 1;
 	}
 
 	// grab the initial stream
@@ -255,5 +256,5 @@ var MjpegCanvas = function(options) {
 	// redraw the image every 100 ms
 	setInterval(function() {
 		draw(_img);
-	}, 60);
+	}, 100);
 };
