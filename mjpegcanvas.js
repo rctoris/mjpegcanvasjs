@@ -36,8 +36,19 @@
  *   Author: Russell Toris
  *  Version: September 27, 2012
  *
+ *   AMDfied by Jihoon
+ *   Version : Oct 05, 2012
+ *
  *********************************************************************/
 
+(function (root, factory) {
+    if(typeof define === 'function' && define.amd) {
+        define([],factory);
+    }
+    else {
+        root.MjpegCanvas = factory();
+    }
+}(this, function() {
 var MjpegCanvas = function(options) {
   var mjpegCanvas = this;
   options = options || {};
@@ -248,3 +259,5 @@ var MjpegCanvas = function(options) {
     draw(_img);
   }, 100);
 };
+return MjpegCanvas;
+}));
