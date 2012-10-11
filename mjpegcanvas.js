@@ -36,217 +36,236 @@
  *   Author: Russell Toris
  *  Version: October 9, 2012
  *
+ *   AMDfied by Jihoon
+ *   Version : Oct 05, 2012
+ *
  *********************************************************************/
 
-var MjpegCanvas = function(options) {
-  var mjpegCanvas = this;
-  options = options || {};
-  mjpegCanvas.host = options.host;
-  mjpegCanvas.port = options.port || 8080;
-  mjpegCanvas.topic = options.topic;
-  mjpegCanvas.label = options.label;
-  mjpegCanvas.defaultStream = options.defaultStream || 0;
-  mjpegCanvas.quality = options.quality;
-  mjpegCanvas.canvasID = options.canvasID;
-  mjpegCanvas.width = options.width;
-  mjpegCanvas.height = options.height;
-
-  // current streaming topic
-  var curStream = null;
-  var img = null;
-
-  // grab the canvas
-  var canvas = document.getElementById(mjpegCanvas.canvasID);
-  var context = canvas.getContext('2d');
-
-  var createImage = function() {
-    // create the image to hold the stream
-    img = new Image();
-    var src = 'http://' + mjpegCanvas.host + ':' + mjpegCanvas.port
-        + '/stream?topic=' + curStream;
-    // check for various options
-    if (mjpegCanvas.width > 0) {
-      src += '?width=' + mjpegCanvas.width;
-    }
-    if (mjpegCanvas.width > 0) {
-      src += '?height=' + mjpegCanvas.height;
-    }
-    if (mjpegCanvas.quality > 0) {
-      src += '?quality=' + mjpegCanvas.quality;
-    }
-    img.src = src;
-  };
-
-  // check if the topics is a list or single topic
-  if (mjpegCanvas.topic instanceof Array) {
-    // check the labels
-    if (!(mjpegCanvas.label && mjpegCanvas.label instanceof Array && mjpegCanvas.label.length == mjpegCanvas.topic.length)) {
-      mjpegCanvas.label = null;
-    }
-
-    // start the stream with the first topic
-    curStream = mjpegCanvas.topic[mjpegCanvas.defaultStream];
-
-    // button options
-    context.globalAlpha = 0.66;
-    var buttonMargin = 10;
-    var buttonPadding = 5;
-    var buttonHeight = 25;
-    var buttonWidth = 55;
-    var buttonColor = 'black';
-    var buttonStrokeSize = 5;
-    var buttonStrokeColor = 'blue';
-    var editFont = '16pt Verdana';
-    var editColor = 'white';
-
-    // menu div
-    var menu = document.createElement('div');
-    document.getElementsByTagName('body')[0].appendChild(menu);
-    menu.style.display = 'none';
-
-    // create the mouseovers
-    var mouseEnter = false;
-    var menuOpen = false;
-    canvas.addEventListener('mouseenter', function(e) {
-      mouseEnter = true;
-    }, false);
-    canvas.addEventListener('mouseleave', function(e) {
-      mouseEnter = false;
-    }, false);
-    canvas
-        .addEventListener(
-            'click',
-            function(e) {
-              // create a unique ID
-              var id = (new Date()).getTime();
-
-              var offsetLeft = 0;
-              var offsetTop = 0;
-              var element = canvas;
-              while (element && !isNaN(element.offsetLeft)
-                  && !isNaN(element.offsetTop)) {
-                offsetLeft += element.offsetLeft - element.scrollLeft;
-                offsetTop += element.offsetTop - element.scrollTop;
-                element = element.offsetParent;
-              }
-
-              var x = e.pageX - offsetLeft;
-              var y = e.pageY - offsetTop;
-              var height = canvas.getAttribute('height');
-              var width = canvas.getAttribute('width');
-
-              // check if we are in the 'edit' button
-              if (x < (buttonWidth + buttonMargin) && x > buttonMargin
-                  && y > (height - (buttonHeight + buttonMargin))
-                  && y < height - buttonMargin) {
-                menuOpen = true;
-
-                // create the menu
-                var html = '<h2>Camera Streams</h2><hr /><br /><form><label for="stream">Stream</label><select name="stream" id="stream-'
-                    + id + '" required>';
-                for ( var i = 0; i < mjpegCanvas.topic.length; i++) {
-                  // check if this is the selected option
-                  var selected = '';
-                  if (mjpegCanvas.topic[i] === curStream) {
-                    var selected = 'selected="selected"';
-                  }
-                  html += '<option value="' + mjpegCanvas.topic[i] + '" '
-                      + selected + '>';
-                  // check for a label
-                  if (mjpegCanvas.label) {
-                    html += mjpegCanvas.label[i];
-                  } else {
-                    html += mjpegCanvas.topic[i];
-                  }
-                  html += '</option>';
-                }
-                html += '</select></form><br /><button id="button-' + id
-                    + '">Close</button>';
-
-                // display the menu
-                menu.innerHTML = html;
-                menu.style.position = 'absolute';
-                menu.style.top = offsetTop + 'px';
-                menu.style.left = offsetLeft + 'px';
-                menu.style.width = width + 'px';
-                menu.style.display = 'block';
-
-                // dropdown change listener
-                var select = document.getElementById('stream-' + id);
-                select.addEventListener('click', function() {
-                  var stream = select.options[select.selectedIndex].value;
-                  // make sure it is a new stream
-                  if (stream !== curStream) {
-                    curStream = stream;
-                    img = null;
-                    createImage();
-                    // emit an event for the change
-                    mjpegCanvas.emit('change', stream);
-                  }
-                }, false);
-
-                // create the event listener for the close
-                var button = document.getElementById('button-' + id);
-                button.addEventListener('click', function(e) {
-                  // close the menu
-                  menuOpen = false;
-                  menu.style.display = 'none';
-                }, false);
-              }
-            }, false);
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
   } else {
-    curStream = mjpegCanvas.topic;
+    root.MjpegCanvas = factory();
   }
+}
+    (
+        this,
+        function() {
+          var MjpegCanvas = function(options) {
+            var mjpegCanvas = this;
+            options = options || {};
+            mjpegCanvas.host = options.host;
+            mjpegCanvas.port = options.port || 8080;
+            mjpegCanvas.topic = options.topic;
+            mjpegCanvas.label = options.label;
+            mjpegCanvas.defaultStream = options.defaultStream || 0;
+            mjpegCanvas.quality = options.quality;
+            mjpegCanvas.canvasID = options.canvasID;
+            mjpegCanvas.width = options.width;
+            mjpegCanvas.height = options.height;
 
-  // a function to draw the image onto the canvas
-  function draw(img) {
-    // grab the current sizes of the canvas
-    var width = canvas.getAttribute('width');
-    var height = canvas.getAttribute('height');
+            // current streaming topic
+            var curStream = null;
+            var img = null;
 
-    // grab the drawing context and draw the image
-    if (img) {
-      context.drawImage(img, 0, 0, width, height);
-    } else {
-      context.clearRect(0, 0, width, height);
-    }
+            // grab the canvas
+            var canvas = document.getElementById(mjpegCanvas.canvasID);
+            var context = canvas.getContext('2d');
 
-    if (mouseEnter && !menuOpen) {
-      // create the "swap" button
-      context.globalAlpha = 0.66;
-      context.beginPath();
-      context.rect(buttonMargin, height - (buttonHeight + buttonMargin),
-          buttonWidth, buttonHeight);
-      context.fillStyle = buttonColor;
-      context.fill();
-      context.lineWidth = buttonStrokeSize;
-      context.strokeStyle = buttonStrokeColor;
-      context.stroke();
+            var createImage = function() {
+              // create the image to hold the stream
+              img = new Image();
+              var src = 'http://' + mjpegCanvas.host + ':' + mjpegCanvas.port
+                  + '/stream?topic=' + curStream;
+              // check for various options
+              if (mjpegCanvas.width > 0) {
+                src += '?width=' + mjpegCanvas.width;
+              }
+              if (mjpegCanvas.width > 0) {
+                src += '?height=' + mjpegCanvas.height;
+              }
+              if (mjpegCanvas.quality > 0) {
+                src += '?quality=' + mjpegCanvas.quality;
+              }
+              img.src = src;
+            };
 
-      // draw the text on the button
-      context.font = editFont;
-      context.fillStyle = editColor;
-      context.fillText('Edit', buttonMargin + buttonPadding, height
-          - (buttonMargin + buttonPadding));
-    }
+            // check if the topics is a list or single topic
+            if (mjpegCanvas.topic instanceof Array) {
+              // check the labels
+              if (!(mjpegCanvas.label && mjpegCanvas.label instanceof Array && mjpegCanvas.label.length == mjpegCanvas.topic.length)) {
+                mjpegCanvas.label = null;
+              }
 
-    if (menuOpen) {
-      // create the white box
-      context.globalAlpha = 0.66;
-      context.beginPath();
-      context.rect(0, 0, width, height);
-      context.fillStyle = 'white';
-      context.fill();
-    }
-    context.globalAlpha = 1;
-  }
+              // start the stream with the first topic
+              curStream = mjpegCanvas.topic[mjpegCanvas.defaultStream];
 
-  // grab the initial stream
-  createImage();
+              // button options
+              context.globalAlpha = 0.66;
+              var buttonMargin = 10;
+              var buttonPadding = 5;
+              var buttonHeight = 25;
+              var buttonWidth = 55;
+              var buttonColor = 'black';
+              var buttonStrokeSize = 5;
+              var buttonStrokeColor = 'blue';
+              var editFont = '16pt Verdana';
+              var editColor = 'white';
 
-  // redraw the image every 100 ms
-  setInterval(function() {
-    draw(img);
-  }, 100);
-};
-MjpegCanvas.prototype.__proto__ = EventEmitter2.prototype;
+              // menu div
+              var menu = document.createElement('div');
+              document.getElementsByTagName('body')[0].appendChild(menu);
+              menu.style.display = 'none';
+
+              // create the mouseovers
+              var mouseEnter = false;
+              var menuOpen = false;
+              canvas.addEventListener('mouseenter', function(e) {
+                mouseEnter = true;
+              }, false);
+              canvas.addEventListener('mouseleave', function(e) {
+                mouseEnter = false;
+              }, false);
+              canvas
+                  .addEventListener(
+                      'click',
+                      function(e) {
+                        // create a unique ID
+                        var id = (new Date()).getTime();
+
+                        var offsetLeft = 0;
+                        var offsetTop = 0;
+                        var element = canvas;
+                        while (element && !isNaN(element.offsetLeft)
+                            && !isNaN(element.offsetTop)) {
+                          offsetLeft += element.offsetLeft - element.scrollLeft;
+                          offsetTop += element.offsetTop - element.scrollTop;
+                          element = element.offsetParent;
+                        }
+
+                        var x = e.pageX - offsetLeft;
+                        var y = e.pageY - offsetTop;
+                        var height = canvas.getAttribute('height');
+                        var width = canvas.getAttribute('width');
+
+                        // check if we are in the 'edit' button
+                        if (x < (buttonWidth + buttonMargin)
+                            && x > buttonMargin
+                            && y > (height - (buttonHeight + buttonMargin))
+                            && y < height - buttonMargin) {
+                          menuOpen = true;
+
+                          // create the menu
+                          var html = '<h2>Camera Streams</h2><hr /><br /><form><label for="stream">Stream</label><select name="stream" id="stream-'
+                              + id + '" required>';
+                          for ( var i = 0; i < mjpegCanvas.topic.length; i++) {
+                            // check if this is the selected option
+                            var selected = '';
+                            if (mjpegCanvas.topic[i] === curStream) {
+                              var selected = 'selected="selected"';
+                            }
+                            html += '<option value="' + mjpegCanvas.topic[i]
+                                + '" ' + selected + '>';
+                            // check for a label
+                            if (mjpegCanvas.label) {
+                              html += mjpegCanvas.label[i];
+                            } else {
+                              html += mjpegCanvas.topic[i];
+                            }
+                            html += '</option>';
+                          }
+                          html += '</select></form><br /><button id="button-'
+                              + id + '">Close</button>';
+
+                          // display the menu
+                          menu.innerHTML = html;
+                          menu.style.position = 'absolute';
+                          menu.style.top = offsetTop + 'px';
+                          menu.style.left = offsetLeft + 'px';
+                          menu.style.width = width + 'px';
+                          menu.style.display = 'block';
+
+                          // dropdown change listener
+                          var select = document.getElementById('stream-' + id);
+                          select
+                              .addEventListener(
+                                  'click',
+                                  function() {
+                                    var stream = select.options[select.selectedIndex].value;
+                                    // make sure it is a new stream
+                                    if (stream !== curStream) {
+                                      curStream = stream;
+                                      img = null;
+                                      createImage();
+                                      // emit an event for the change
+                                      mjpegCanvas.emit('change', stream);
+                                    }
+                                  }, false);
+
+                          // create the event listener for the close
+                          var button = document.getElementById('button-' + id);
+                          button.addEventListener('click', function(e) {
+                            // close the menu
+                            menuOpen = false;
+                            menu.style.display = 'none';
+                          }, false);
+                        }
+                      }, false);
+            } else {
+              curStream = mjpegCanvas.topic;
+            }
+
+            // a function to draw the image onto the canvas
+            function draw(img) {
+              // grab the current sizes of the canvas
+              var width = canvas.getAttribute('width');
+              var height = canvas.getAttribute('height');
+
+              // grab the drawing context and draw the image
+              if (img) {
+                context.drawImage(img, 0, 0, width, height);
+              } else {
+                context.clearRect(0, 0, width, height);
+              }
+
+              if (mouseEnter && !menuOpen) {
+                // create the "swap" button
+                context.globalAlpha = 0.66;
+                context.beginPath();
+                context.rect(buttonMargin, height
+                    - (buttonHeight + buttonMargin), buttonWidth, buttonHeight);
+                context.fillStyle = buttonColor;
+                context.fill();
+                context.lineWidth = buttonStrokeSize;
+                context.strokeStyle = buttonStrokeColor;
+                context.stroke();
+
+                // draw the text on the button
+                context.font = editFont;
+                context.fillStyle = editColor;
+                context.fillText('Edit', buttonMargin + buttonPadding, height
+                    - (buttonMargin + buttonPadding));
+              }
+
+              if (menuOpen) {
+                // create the white box
+                context.globalAlpha = 0.66;
+                context.beginPath();
+                context.rect(0, 0, width, height);
+                context.fillStyle = 'white';
+                context.fill();
+              }
+              context.globalAlpha = 1;
+            }
+
+            // grab the initial stream
+            createImage();
+
+            // redraw the image every 100 ms
+            setInterval(function() {
+              draw(img);
+            }, 100);
+          };
+          MjpegCanvas.prototype.__proto__ = EventEmitter2.prototype;
+          return MjpegCanvas;
+        }));
