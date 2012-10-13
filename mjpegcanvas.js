@@ -63,6 +63,7 @@
             mjpegCanvas.canvasID = options.canvasID;
             mjpegCanvas.width = options.width;
             mjpegCanvas.height = options.height;
+            mjpegCanvas.showMenus = options.showMenus;
 
             // current streaming topic
             var curStream = null;
@@ -124,7 +125,7 @@
                 mouseEnter = true;
               }, false);
               canvas.addEventListener('mouseleave', function(e) {
-                mouseEnter = false;
+                mouseEnter = true;
               }, false);
               canvas
                   .addEventListener(
@@ -228,7 +229,7 @@
                 context.clearRect(0, 0, width, height);
               }
 
-              if (mouseEnter && !menuOpen) {
+              if ((mouseEnter || mjpegCanvas.showMenus) && !menuOpen) {
                 // create the "swap" button
                 context.globalAlpha = 0.66;
                 context.beginPath();
