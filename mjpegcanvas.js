@@ -125,7 +125,7 @@
                 mouseEnter = true;
               }, false);
               canvas.addEventListener('mouseleave', function(e) {
-                mouseEnter = true;
+                mouseEnter = false;
               }, false);
               canvas
                   .addEventListener(
