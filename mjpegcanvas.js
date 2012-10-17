@@ -43,14 +43,14 @@
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define([], factory);
+    define(['eventemitter2'], factory);
   } else {
-    root.MjpegCanvas = factory();
+    root.MjpegCanvas = factory(root.EventEmitter2);
   }
 }
     (
         this,
-        function() {
+        function(EventEmitter2) {
           var MjpegCanvas = function(options) {
             var mjpegCanvas = this;
             options = options || {};
