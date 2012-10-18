@@ -4,25 +4,26 @@
 <meta charset="UTF-8">
 <title>MJPEG Canvas Example</title>
 
-<script type="text/javascript" src="https://raw.github.com/RobotWebTools/rosjs/fuerte-devel/dist/eventemitter2.js"></script>
+<script type="text/javascript"
+	src="https://raw.github.com/RobotWebTools/rosjs/fuerte-devel/dist/eventemitter2.js"></script>
+
 <script type="text/javascript" src="../mjpegcanvas.js"></script>
 
 <script type="text/javascript">
-	function start() {
-		// initialize the stream on the canvas 
-		var mjpeg = new MjpegCanvas({
-			host : 'localhost',
-			topic : '/l_forearm_cam/image_color',
-			canvasID : 'my-mjpeg',
-			width : 640,
-			height : 480
-		});
-	}
+  function start() {
+    // initialize the stream on the canvas 
+    var mjpeg = new MjpegCanvas({
+      host : 'localhost',
+      topic : '/l_forearm_cam/image_color',
+      canvasID : 'my-mjpeg',
+      width : 800,
+      height : 600
+    });
+  }
 </script>
 </head>
 
 <body onload="start()">
 	<canvas id="my-mjpeg" width="640" height="480"></canvas>
 </body>
-
 </html>
