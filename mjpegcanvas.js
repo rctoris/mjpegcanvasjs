@@ -242,9 +242,13 @@
             createImage();
 
             // redraw the image every 100 ms
-            setInterval(function() {
+            var drawInt = setInterval(function() {
               draw(img);
             }, 100);
+
+            mjpegCanvas.destroy = function() {
+              window.clearInterval(drawInt);
+            };
           };
           MjpegCanvas.prototype.__proto__ = EventEmitter2.prototype;
           return MjpegCanvas;
