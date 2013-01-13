@@ -1,9 +1,0 @@
-<stack>
-	<description brief="Displays a MJPEG stream from mjpeg_server inside of a HTML5 canvas.">Displays a MJPEG stream from mjpeg_server inside of a HTML5 canvas.</description>
-	<author>Russell Toris</author>
-	<license>BSD</license>  
-	<review status="unreviewed" notes="" />
-	<url>http://ros.org/wiki/mjpegcanvasjs</url>
-
-	<depend stack="ros" />
-</stack>

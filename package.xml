@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>mjpegcanvasjs</name>
+  <version>0.2.0</version>
+  <description>Renders a ROS occupancy grid map into a HTML5 cavas element.</description>
+
+  <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
+  <author email="rctoris@wpi.edu">Russell Toris</author>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/mjpegcanvasjs</url>
+  <url type="bugtracker">https://github.com/WPI-RAIL/mjpegcanvasjs/issues</url>
+  <url type="repository">https://github.com/WPI-RAIL/mjpegcanvasjs</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
