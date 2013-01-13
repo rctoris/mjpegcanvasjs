@@ -2,7 +2,7 @@
 <package>
   <name>mjpegcanvasjs</name>
   <version>0.2.0</version>
-  <description>Renders a ROS occupancy grid map into a HTML5 cavas element.</description>
+  <description>Displays a MJPEG stream from mjpeg_server inside of a HTML5 canvas.</description>
 
   <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
   <author email="rctoris@wpi.edu">Russell Toris</author>
