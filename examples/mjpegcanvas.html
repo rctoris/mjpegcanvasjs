@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>MJPEG Canvas Example</title>
+<meta charset="utf-8" />
+<script type="text/javascript" src="../include/EventEmitter2/eventemitter2.js"></script>
+<script type="text/javascript" src="../build/mjpegcanvas.js"></script>
 
-<script type="text/javascript"
-	src="https://raw.github.com/RobotWebTools/rosjs/groovy-devel/dist/eventemitter2.js"></script>
-
-<script type="text/javascript" src="../mjpegcanvas.js"></script>
-
-<script type="text/javascript">
-  function start() {
-    // initialize the stream on the canvas 
-    var mjpeg = new MjpegCanvas({
-      host : 'localhost',
-      topic : '/l_forearm_cam/image_color',
-      canvasID : 'my-mjpeg',
-      width : 800,
-      height : 600
+<script type="text/javascript" type="text/javascript">
+  /**
+   * Setup all visualization elements when the page is loaded. 
+   */
+  function init() {
+    // Create the main viewer.
+    var viewer = new MJPEGCANVAS.Viewer({
+      divID : 'mjpeg',
+      width : 640,
+      height : 480,
+      topic : '/test'
     });
   }
 </script>
 </head>
 
-<body onload="start()">
-	<canvas id="my-mjpeg" width="640" height="480"></canvas>
+<body onload="init()">
+  <h1>Simple MJPEG Canvas Example</h1>
+  <p>
+    Run the following commands in the terminal then refresh this page. 
+  </p>
+  <ol>
+    <li><tt>roscore</tt></li>
+    <li><tt>rosrun mjpeg_server mjpeg_server</tt></li>
+  </ol>
+  <div id="mjpeg"></div>
 </body>
 </html>
