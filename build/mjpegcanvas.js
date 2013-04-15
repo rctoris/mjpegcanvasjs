@@ -267,6 +267,13 @@ MJPEGCANVAS.Viewer = function(options) {
   document.getElementById(divID).appendChild(this.canvas);
   var context = this.canvas.getContext('2d');
 
+  // use requestAnimationFrame if it exists
+  var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+      || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
+      || window.msRequestAnimationFrame || function(callback) {
+        setInterval(callback, 100);
+      };
+
   /**
    * A function to draw the image onto the canvas.
    */
@@ -288,13 +295,12 @@ MJPEGCANVAS.Viewer = function(options) {
     if (overlay) {
       context.drawImage(overlay, 0, 0);
     }
+    requestAnimationFrame(draw);
   }
 
   // grab the initial stream
   this.changeStream(topic);
-
-  // redraw the image every 30ms
-  setInterval(draw, 30);
+  draw();
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
