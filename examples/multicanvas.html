@@ -11,12 +11,14 @@
    */
   function init() {
     // Create the main viewer.
-    var viewer = new MJPEGCANVAS.Viewer({
+    var viewer = new MJPEGCANVAS.MultiStreamViewer({
       divID : 'mjpeg',
       host : 'localhost',
       width : 640,
       height : 480,
-      topic : '/wide_stereo/left/image_color'
+      topics : [ '/wide_stereo/left/image_color', '/l_forearm_cam/image_color',
+          '/r_forearm_cam/image_color' ],
+      labels : [ 'Robot View', 'Left Arm View', 'Right Arm View' ]
     });
   }
 </script>
@@ -24,9 +26,7 @@
 
 <body onload="init()">
   <h1>Simple MJPEG Canvas Example</h1>
-  <p>
-    Run the following commands in the terminal then refresh this page. 
-  </p>
+  <p>Run the following commands in the terminal then refresh this page.</p>
   <ol>
     <li><tt>roscore</tt></li>
     <li><tt>roslaunch pr2_gazebo pr2_empty_world.launch</tt></li>
