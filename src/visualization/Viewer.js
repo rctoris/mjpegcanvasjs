@@ -17,7 +17,8 @@
  *   * host - the hostname of the MJPEG server
  *   * port (optional) - the port to connect to
  *   * quality (optional) - the quality of the stream (from 1-100)
- *   * topic - the topic to stream, like '/l_forearm_cam/image_color'
+ *   * topic - the topic to stream, like '/wide_stereo/left/image_color'
+ *   * overlay (optional) - a canvas to overlay after the image is drawn
  */
 MJPEGCANVAS.Viewer = function(options) {
   var that = this;
@@ -29,6 +30,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.port = options.port || 8080;
   this.quality = options.quality;
   var topic = options.topic;
+  var overlay = options.overlay;
 
   // create no image initially
   this.image = new Image();
@@ -37,31 +39,33 @@ MJPEGCANVAS.Viewer = function(options) {
   var errorIcon = new MJPEGCANVAS.ErrorIcon();
 
   // create the canvas to render to
-  var canvas = document.createElement('canvas');
-  canvas.width = this.width;
-  canvas.height = this.height;
-  canvas.style.background = '#aaaaaa';
-  document.getElementById(divID).appendChild(canvas);
-  var context = canvas.getContext('2d');
+  this.canvas = document.createElement('canvas');
+  this.canvas.width = this.width;
+  this.canvas.height = this.height;
+  this.canvas.style.background = '#aaaaaa';
+  document.getElementById(divID).appendChild(this.canvas);
+  var context = this.canvas.getContext('2d');
 
   /**
    * A function to draw the image onto the canvas.
    */
   function draw() {
     // clear the canvas
-    canvas.width = canvas.width;
-    // grab the current sizes of the canvas
-    var width = canvas.getAttribute('width');
-    var height = canvas.getAttribute('height');
+    that.canvas.width = that.canvas.width;
 
     // check if we have a valid image
     if (that.image.width * that.image.height > 0) {
-      context.drawImage(that.image, 0, 0, width, height);
+      context.drawImage(that.image, 0, 0, that.width, that.height);
     } else {
       // center the error icon
-      context.drawImage(errorIcon.image, (width - (width / 2)) / 2, (height - (height / 2)) / 2,
-          width / 2, height / 2);
+      context.drawImage(errorIcon.image, (that.width - (that.width / 2)) / 2,
+          (that.height - (that.height / 2)) / 2, that.width / 2, that.height / 2);
       that.emit('warning', 'Invalid stream.');
+    }
+
+    // check for an overlay
+    if (overlay) {
+      context.drawImage(overlay, 0, 0);
     }
   }
 
@@ -76,7 +80,7 @@ MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 /**
  * Change the stream of this canvas to the given topic.
  *
- * @param topic - the topic to stream, like '/l_forearm_cam/image_color'
+ * @param topic - the topic to stream, like '/wide_stereo/left/image_color'
  */
 MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   this.image = new Image();
