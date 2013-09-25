@@ -50,7 +50,7 @@ MJPEGCANVAS.Viewer = function(options) {
   var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
       || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
       || window.msRequestAnimationFrame || function(callback) {
-        setInterval(callback, 100);
+        setInterval(callback, 200);
       };
 
   /**
@@ -59,6 +59,10 @@ MJPEGCANVAS.Viewer = function(options) {
   function draw() {
     // clear the canvas
     that.canvas.width = that.canvas.width;
+    //Reset src of the image to force reload of ROS-image stream
+    that.image.src = that.image.src;
+    //Wait half of the interval time to allow browser to reload image before calling drawImage
+    sleep(100);
 
     // check if we have a valid image
     if (that.image.width * that.image.height > 0) {
