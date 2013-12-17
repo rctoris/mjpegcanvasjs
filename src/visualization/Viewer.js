@@ -29,7 +29,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.host = options.host;
   this.port = options.port || 8080;
   this.quality = options.quality;
-  this.interval = options.interval;
+  this.interval = options.interval || 30;
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -69,15 +69,15 @@ MJPEGCANVAS.Viewer = function(options) {
       context.drawImage(overlay, 0, 0);
     }
     
-    //Reset src of the image to force reload of ROS-image stream
+    // raeset src of the image to force reload of image stream
     that.image.src = that.image.src;
   }
 
   // grab the initial stream
   this.changeStream(topic);
   
-  //Program interval to call draw with this.interval
-  setInterval(draw,this.interval);
+  // call draw with this.interval
+  setInterval(draw, this.interval);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
