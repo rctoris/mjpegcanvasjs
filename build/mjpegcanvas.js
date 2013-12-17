@@ -3,7 +3,7 @@
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {
-  REVISION : '2-devel'
+  REVISION : '2'
 };
 
 /**
@@ -250,6 +250,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.host = options.host;
   this.port = options.port || 8080;
   this.quality = options.quality;
+  this.interval = options.interval || 30;
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -267,20 +268,13 @@ MJPEGCANVAS.Viewer = function(options) {
   document.getElementById(divID).appendChild(this.canvas);
   var context = this.canvas.getContext('2d');
 
-  // use requestAnimationFrame if it exists
-  var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
-      || window.mozRequestAnimationFrame || window.oRequestAnimationFrame
-      || window.msRequestAnimationFrame || function(callback) {
-        setInterval(callback, 100);
-      };
-
   /**
    * A function to draw the image onto the canvas.
    */
   function draw() {
     // clear the canvas
     that.canvas.width = that.canvas.width;
-
+   
     // check if we have a valid image
     if (that.image.width * that.image.height > 0) {
       context.drawImage(that.image, 0, 0, that.width, that.height);
@@ -295,12 +289,16 @@ MJPEGCANVAS.Viewer = function(options) {
     if (overlay) {
       context.drawImage(overlay, 0, 0);
     }
-    requestAnimationFrame(draw);
+    
+    // raeset src of the image to force reload of image stream
+    that.image.src = that.image.src;
   }
 
   // grab the initial stream
   this.changeStream(topic);
-  draw();
+  
+  // call draw with this.interval
+  setInterval(draw, this.interval);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 

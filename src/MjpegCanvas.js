@@ -3,5 +3,5 @@
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {
-  REVISION : '2-devel'
+  REVISION : '2'
 };
