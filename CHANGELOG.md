@@ -1,3 +1,6 @@
+DEVEL - **r3**
+ * Fix for Firefox/Chrome compatibility [(rctoris)](https://github.com/rctoris)
+
 DEVEL - **r2**
  * Revert to setInterval over requestAnimationFrame [(wintermuteger)](https://github.com/wintermuteger)
 
