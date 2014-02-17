@@ -19,6 +19,7 @@
  *   * quality (optional) - the quality of the stream (from 1-100)
  *   * topic - the topic to stream, like '/wide_stereo/left/image_color'
  *   * overlay (optional) - a canvas to overlay after the image is drawn
+ *   * refreshRate (optional) - a refresh rate in Hz
  */
 MJPEGCANVAS.Viewer = function(options) {
   var that = this;
@@ -29,6 +30,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.host = options.host;
   this.port = options.port || 8080;
   this.quality = options.quality;
+  this.refreshRate = options.refreshRate || 10;
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -75,7 +77,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.changeStream(topic);
 
   // redraw the image every 30ms
-  setInterval(draw, 30);
+  setInterval(draw, 1 / that.refreshRate * 1000);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
