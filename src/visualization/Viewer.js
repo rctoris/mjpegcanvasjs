@@ -69,7 +69,8 @@ MJPEGCANVAS.Viewer = function(options) {
 
     // silly firefox...
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-      that.image.src = that.image.src;
+      var aux = that.image.src.split('?killcache=');
+      that.image.src = aux[0] + '?killcache=' + Math.random(42);
     }
   }
 
