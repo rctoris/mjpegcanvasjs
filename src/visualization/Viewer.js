@@ -20,6 +20,7 @@
  *   * topic - the topic to stream, like '/wide_stereo/left/image_color'
  *   * overlay (optional) - a canvas to overlay after the image is drawn
  *   * refreshRate (optional) - a refresh rate in Hz
+ *   * interval (optional) - an interval time in milliseconds
  */
 MJPEGCANVAS.Viewer = function(options) {
   var that = this;
@@ -31,6 +32,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.port = options.port || 8080;
   this.quality = options.quality;
   this.refreshRate = options.refreshRate || 10;
+  this.interval = options.interval || 30;
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -48,10 +50,14 @@ MJPEGCANVAS.Viewer = function(options) {
   document.getElementById(divID).appendChild(this.canvas);
   var context = this.canvas.getContext('2d');
 
+  var drawInterval = Math.max(1 / this.refreshRate * 1000, this.interval);
+  /**
+   * A function to draw the image onto the canvas.
+   */
   function draw() {
     // clear the canvas
     that.canvas.width = that.canvas.width;
-
+   
     // check if we have a valid image
     if (that.image.width * that.image.height > 0) {
       context.drawImage(that.image, 0, 0, that.width, that.height);
@@ -76,9 +82,9 @@ MJPEGCANVAS.Viewer = function(options) {
 
   // grab the initial stream
   this.changeStream(topic);
-
-  // redraw the image every 30ms
-  setInterval(draw, 1 / that.refreshRate * 1000);
+  
+  // call draw with the given interval or rate
+  setInterval(draw, drawInterval);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
