@@ -19,6 +19,8 @@
  *   * quality (optional) - the quality of the stream (from 1-100)
  *   * topic - the topic to stream, like '/wide_stereo/left/image_color'
  *   * overlay (optional) - a canvas to overlay after the image is drawn
+ *   * refreshRate (optional) - a refresh rate in Hz
+ *   * interval (optional) - an interval time in milliseconds
  */
 MJPEGCANVAS.Viewer = function(options) {
   var that = this;
@@ -29,6 +31,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.host = options.host;
   this.port = options.port || 8080;
   this.quality = options.quality;
+  this.refreshRate = options.refreshRate || 10;
   this.interval = options.interval || 30;
   var topic = options.topic;
   var overlay = options.overlay;
@@ -47,6 +50,7 @@ MJPEGCANVAS.Viewer = function(options) {
   document.getElementById(divID).appendChild(this.canvas);
   var context = this.canvas.getContext('2d');
 
+  var drawInterval = Math.max(1 / this.refreshRate * 1000, this.interval);
   /**
    * A function to draw the image onto the canvas.
    */
@@ -68,16 +72,19 @@ MJPEGCANVAS.Viewer = function(options) {
     if (overlay) {
       context.drawImage(overlay, 0, 0);
     }
-    
-    // raeset src of the image to force reload of image stream
-    that.image.src = that.image.src;
+
+    // silly firefox...
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+      var aux = that.image.src.split('?killcache=');
+      that.image.src = aux[0] + '?killcache=' + Math.random(42);
+    }
   }
 
   // grab the initial stream
   this.changeStream(topic);
   
-  // call draw with this.interval
-  setInterval(draw, this.interval);
+  // call draw with the given interval or rate
+  setInterval(draw, drawInterval);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
