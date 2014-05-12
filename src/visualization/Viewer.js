@@ -33,6 +33,7 @@ MJPEGCANVAS.Viewer = function(options) {
   this.quality = options.quality;
   this.refreshRate = options.refreshRate || 10;
   this.interval = options.interval || 30;
+  this.invert = options.invert || false;
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -102,6 +103,9 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   src += '?height=' + this.height;
   if (this.quality > 0) {
     src += '?quality=' + this.quality;
+  }
+  if (this.invert) {
+    src += '?invert=' + this.invert;
   }
   this.image.src = src;
   // emit an event for the change
