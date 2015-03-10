@@ -19,6 +19,8 @@
  *   * quality (optional) - the quality of the stream (from 1-100)
  *   * topic - the topic to stream, like '/wide_stereo/left/image_color'
  *   * overlay (optional) - a canvas to overlay after the image is drawn
+ *   * refreshRate (optional) - a refresh rate in Hz
+ *   * interval (optional) - an interval time in milliseconds
  */
 MJPEGCANVAS.Viewer = function(options) {
   var that = this;
@@ -29,6 +31,10 @@ MJPEGCANVAS.Viewer = function(options) {
   this.host = options.host;
   this.port = options.port || 8080;
   this.quality = options.quality;
+  this.refreshRate = options.refreshRate || 10;
+  this.interval = options.interval || 30;
+  this.invert = options.invert || false;
+
   var topic = options.topic;
   var overlay = options.overlay;
 
@@ -46,6 +52,10 @@ MJPEGCANVAS.Viewer = function(options) {
   document.getElementById(divID).appendChild(this.canvas);
   var context = this.canvas.getContext('2d');
 
+  var drawInterval = Math.max(1 / this.refreshRate * 1000, this.interval);
+  /**
+   * A function to draw the image onto the canvas.
+   */
   function draw() {
     // clear the canvas
     that.canvas.width = that.canvas.width;
@@ -67,15 +77,16 @@ MJPEGCANVAS.Viewer = function(options) {
 
     // silly firefox...
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-      that.image.src = that.image.src;
+      var aux = that.image.src.split('?killcache=');
+      that.image.src = aux[0] + '?killcache=' + Math.random(42);
     }
   }
 
   // grab the initial stream
   this.changeStream(topic);
 
-  // redraw the image every 30ms
-  setInterval(draw, 30);
+  // call draw with the given interval or rate
+  setInterval(draw, drawInterval);
 };
 MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 
@@ -89,10 +100,13 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   // create the image to hold the stream
   var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
   // add various options
-  src += '?width=' + this.width;
-  src += '?height=' + this.height;
+  src += '&width=' + this.width;
+  src += '&height=' + this.height;
   if (this.quality > 0) {
-    src += '?quality=' + this.quality;
+    src += '&quality=' + this.quality;
+  }
+  if (this.invert) {
+    src += '&invert=' + this.invert;
   }
   this.image.src = src;
   // emit an event for the change
