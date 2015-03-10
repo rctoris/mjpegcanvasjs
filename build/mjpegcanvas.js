@@ -3,7 +3,7 @@
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {
-  REVISION : '0.4.0'
+  REVISION : '0.5.0-SNAPSHOT'
 };
 
 /**

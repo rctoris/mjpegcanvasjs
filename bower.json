@@ -1,8 +1,8 @@
 {
   "name": "mjpegcanvas",
   "description": "Display a MJPEG stream from the ROS web_video_server Inside of a HTML5 Canvas",
-  "version": "0.4.0",
-  "homepage": "https://github.com/RobotWebTools/mjpegcanvasjs",
+  "version": "0.5.0-SNAPSHOT",
+  "homepage": "https://github.com/WPI-RAIL/mjpegcanvasjs",
   "authors": [
     "Russell Toris<rctoris@wpi.edu>"
   ],
