@@ -2,7 +2,7 @@
   "name": "mjpegcanvas",
   "homepage": "https://www.robotwebtools.org",
   "description": "Display a MJPEG stream from the ROS web_video_server Inside of a HTML5 Canvas",
-  "version": "0.4.0-SNAPSHOT",
+  "version": "0.4.0",
   "license": "BSD",
   "devDependencies": {
     "grunt": "~0.4.1",
