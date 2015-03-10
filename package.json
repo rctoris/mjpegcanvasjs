@@ -1,0 +1,27 @@
+{
+  "name": "mjpegcanvas",
+  "homepage": "https://www.robotwebtools.org",
+  "description": "Display a MJPEG stream from the ROS web_video_server Inside of a HTML5 Canvas",
+  "version": "0.4.0-SNAPSHOT",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-jsdoc": "~0.3.0",
+    "grunt-contrib-clean": "~0.4.0"
+  },
+  "keywords": [
+    "ROS",
+    "ros",
+    "mjpeg",
+    "mjpegcanvas",
+    "mjpegcanvasjs",
+    "robot",
+    "mjpeg_server",
+    "web_video_server"
+  ],
+  "author": "Russell Toris <rctoris@wpi.edu> (http://wpi.edu/~rctoris/)"
+}

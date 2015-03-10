@@ -4,8 +4,8 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       build: {
-        src  : ['../src/*.js', '../src/**/*.js'],
-        dest : '../build/mjpegcanvas.js'
+        src  : ['./src/*.js', './src/**/*.js'],
+        dest : './build/mjpegcanvas.js'
       }
     },
     jshint: {
@@ -14,23 +14,16 @@ module.exports = function(grunt) {
       },
       files: [
         'Gruntfile.js',
-        '../build/mjpegcanvas.js'
+        './build/mjpegcanvas.js'
       ]
-    },
-    karma: {
-      build: {
-        configFile: '../test/karma.conf.js',
-        singleRun: true,
-        browsers: ['PhantomJS']
-      }
     },
     uglify: {
       options: {
         report: 'min'
       },
       build: {
-        src: '../build/mjpegcanvas.js',
-        dest: '../build/mjpegcanvas.min.js'
+        src: './build/mjpegcanvas.js',
+        dest: './build/mjpegcanvas.min.js'
       }
     },
     watch: {
@@ -39,8 +32,8 @@ module.exports = function(grunt) {
           interrupt: true
         },
         files: [
-          '../src/*.js',
-          '../src/**/*.js'
+          './src/*.js',
+          './src/**/*.js'
         ],
         tasks: ['concat']
       },
@@ -51,8 +44,8 @@ module.exports = function(grunt) {
         files: [
           'Gruntfile.js',
           '.jshintrc',
-          '../src/*.js',
-          '../src/**/*.js'
+          './src/*.js',
+          './src/**/*.js'
         ],
         tasks: ['build']
       }
@@ -61,16 +54,16 @@ module.exports = function(grunt) {
       options: {
         force: true
       },
-      doc: ['../doc']
+      doc: ['./doc']
     },
     jsdoc: {
       doc: {
         src: [
-          '../src/*.js',
-          '../src/**/*.js'
+          './src/*.js',
+          './src/**/*.js'
         ],
         options: {
-          destination: '../doc'
+          destination: './doc'
         }
       }
     }
@@ -82,7 +75,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-jsdoc');
-  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('dev', ['concat', 'watch']);
   grunt.registerTask('build', ['concat', 'jshint', 'uglify']);
