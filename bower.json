@@ -4,7 +4,7 @@
   "version": "0.4.0",
   "homepage": "https://github.com/RobotWebTools/mjpegcanvasjs",
   "authors": [
-    "Russell Toris<rctoris@wpi.edu>"
+    "Russell Toris<russell.toris@gmail.com>"
   ],
   "main": "build/mjpegcanvas.js",
   "license": "BSD",

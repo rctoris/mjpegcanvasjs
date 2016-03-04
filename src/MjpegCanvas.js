@@ -1,5 +1,5 @@
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {

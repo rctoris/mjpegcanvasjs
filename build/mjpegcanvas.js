@@ -1,5 +1,5 @@
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 var MJPEGCANVAS = MJPEGCANVAS || {
@@ -7,7 +7,7 @@ var MJPEGCANVAS = MJPEGCANVAS || {
 };
 
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 /**
@@ -220,7 +220,7 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
 MJPEGCANVAS.MultiStreamViewer.prototype.__proto__ = EventEmitter2.prototype;
 
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 /**
@@ -335,7 +335,7 @@ MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
 };
 
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 /**
@@ -384,7 +384,7 @@ MJPEGCANVAS.Button.prototype.redraw = function() {
 };
 
 /**
- * @author Russell Toris - rctoris@wpi.edu
+ * @author Russell Toris - russell.toris@gmail.com
  */
 
 /**
