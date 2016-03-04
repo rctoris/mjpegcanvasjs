@@ -4,7 +4,7 @@
   "version": "0.5.0-SNAPSHOT",
   "homepage": "https://github.com/WPI-RAIL/mjpegcanvasjs",
   "authors": [
-    "Russell Toris<rctoris@wpi.edu>"
+    "Russell Toris<russell.toris@gmail.com>"
   ],
   "main": "build/mjpegcanvas.js",
   "license": "BSD",
