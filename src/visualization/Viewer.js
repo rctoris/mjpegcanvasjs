@@ -26,6 +26,7 @@ MJPEGCANVAS.Viewer = function(options) {
   var that = this;
   options = options || {};
   var divID = options.divID;
+  var querySelector = options.querySelector;
   this.width = options.width;
   this.height = options.height;
   this.host = options.host;
@@ -49,7 +50,12 @@ MJPEGCANVAS.Viewer = function(options) {
   this.canvas.width = this.width;
   this.canvas.height = this.height;
   this.canvas.style.background = '#aaaaaa';
-  document.getElementById(divID).appendChild(this.canvas);
+  if(divID !== undefined) {
+    document.getElementById(divID).appendChild(this.canvas);
+  }
+  if(querySelector !== undefined) {
+    document.querySelector(querySelector).appendChild(this.canvas);
+  }
   var context = this.canvas.getContext('2d');
 
   var drawInterval = Math.max(1 / this.refreshRate * 1000, this.interval);
