@@ -16,6 +16,7 @@
  *   * height - the height of the canvas
  *   * host - the hostname of the MJPEG server
  *   * port (optional) - the port to connect to
+ *   * type (optional) - the type of the stream mjpeg/vp8/ros_compressed
  *   * quality (optional) - the quality of the stream (from 1-100)
  *   * topics - an array of topics to stream
  *   * labels (optional) - an array of labels associated with each topic
@@ -29,6 +30,7 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
   var height = options.height;
   var host = options.host;
   var port = options.port || 8080;
+  var type = options.type || 'mjpeg';
   var quality = options.quality;
   var topics = options.topics;
   var labels = options.labels;
@@ -62,6 +64,7 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
     height : height,
     host : host,
     port : port,
+    type : type,
     quality : quality,
     topic : currentTopic,
     overlay : canvas
