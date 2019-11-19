@@ -247,10 +247,12 @@ MJPEGCANVAS.Viewer = function(options) {
   var that = this;
   options = options || {};
   var divID = options.divID;
+  var querySelector = options.querySelector;
   this.width = options.width;
   this.height = options.height;
   this.host = options.host;
-  this.port = options.port || 8080;
+  this.port = options.port;
+  this.ssl = options.ssl || false;
   this.quality = options.quality;
   this.refreshRate = options.refreshRate || 10;
   this.interval = options.interval || 30;
@@ -270,7 +272,12 @@ MJPEGCANVAS.Viewer = function(options) {
   this.canvas.width = this.width;
   this.canvas.height = this.height;
   this.canvas.style.background = '#aaaaaa';
-  document.getElementById(divID).appendChild(this.canvas);
+  if(divID !== undefined) {
+    document.getElementById(divID).appendChild(this.canvas);
+  }
+  if(querySelector !== undefined) {
+    document.querySelector(querySelector).appendChild(this.canvas);
+  }
   var context = this.canvas.getContext('2d');
 
   var drawInterval = Math.max(1 / this.refreshRate * 1000, this.interval);
@@ -319,7 +326,7 @@ MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
 MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
   this.image = new Image();
   // create the image to hold the stream
-  var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
+  var src = (this.ssl ? 'https://' : 'http://') + this.host + (this.port ? ':' + this.port : '') + '/stream?topic=' + topic;
   // add various options
   src += '&width=' + this.width;
   src += '&height=' + this.height;
