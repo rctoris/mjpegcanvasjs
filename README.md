@@ -1,3 +1,12 @@
+Thanks to @rctoris at https://www.github.com
+*Forked from https://github.com/rctoris/mjpegcanvasjs (Original source)
+
+*Modified to attend necessities, pull request to be approved
+
+Original readme below:
+
+=============
+
 mjpegcanvasjs [![Build Status](https://api.travis-ci.org/rctoris/mjpegcanvasjs.png)](https://travis-ci.org/rctoris/mjpegcanvasjs)
 =============
 
